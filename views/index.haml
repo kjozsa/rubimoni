@@ -1,4 +1,7 @@
 %h3 hellobubi monitor
 
-=@urls
+- @urls.keys.each do |url|
+  = url
+  is up:
+  %i= @urls[url]
 
