@@ -1,11 +1,13 @@
 %h3 hellobubi monitor
 
-- @urls.keys.each do |url|
+%img{ :src => "http://chart.apis.google.com/chart?chs=250x100&chd=t:#{@up},#{@down}&cht=p3&chl=Up|Down"}
+
+- @targets.keys.each do |target|
   %div
-    - if @urls[url]
+    - if @targets[target]
       %img{ :src => 'green.png' }
     - else 
       %img{ :src => 'red.png' }
-    = url
+    = "#{target.name} (#{target.data})"
   
 

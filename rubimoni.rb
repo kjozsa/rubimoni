@@ -1,11 +1,12 @@
 get '/' do
-  @last_refresh = Time.new
-  @urls = {}  # url, is_up?
-  now = DateTime.now
-
+  @last_refresh = DateTime.now
+  @targets = {}  # url, is_up?
+  @up, @down = 0, 0
+  
   Target.all.each do |target|
-    result = @urls[target.data] = http200(target.data)
-    Log.create(:target => target, :measured_at => now, :up => result)
+    is_up = @targets[target] = http200(target.data)
+    Log.create(:target => target, :measured_at => @last_refresh, :up => is_up)
+    is_up ? @up += 1 : @down += 1
   end
 
   haml :index
