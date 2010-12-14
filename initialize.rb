@@ -1,9 +1,11 @@
 require 'rubygems'
 require 'bundler'
+require 'logger'
 Bundler.require
 
 require './rubimoni'
 require './entities'
+require './monitor'
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite::memory:')
