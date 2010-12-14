@@ -1,15 +1,17 @@
 get '/' do
   @last_refresh = Time.new
   @urls = {}  # url, is_up?
+  now = DateTime.now
 
-  ['http://10.160.254.48/COL-PRODUCTION/BillingAccountService?wsdl', 'http://localhost/nincsilyen'].each do |url|
-    @urls[url] = monitor(url)
+  Target.all.each do |target|
+    result = @urls[target.data] = http200(target.data)
+    Log.create(:target => target, :measured_at => now, :up => result)
   end
 
   haml :index
 end
 
-def monitor(url)
+def http200(url)
   puts "monitoring #{url}"
   begin
     Net::HTTP.get_response(URI.parse(url)).code == '200'
