@@ -3,6 +3,7 @@ require 'bundler'
 Bundler.require
 
 require './rubimoni'
+require './entities'
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite::memory:')
