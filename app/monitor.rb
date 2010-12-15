@@ -6,8 +6,10 @@ class Monitor
     File.readlines('monitor.conf').each do |line|
       next if line.match /^\s*$/
       elems = line.split
+      method, name, data = elems.shift, elems.shift, elems.join(' ')
 
-      target = Target.create(:method => elems.shift, :name => elems.shift, :data => elems.join(' '))
+      target = Target.first(:name => name) || Target.create(:name => name)
+      target.update(:method => method, :data => data)
       Log.create(:target => target, :measured_from => now)
     end
     monitor

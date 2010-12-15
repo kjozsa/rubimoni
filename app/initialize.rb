@@ -3,16 +3,20 @@ require 'bundler'
 require 'logger'
 Bundler.require
 
-# config
+# config values
 $refresh = 60
 $watch_mins = 120
 
 # O/R mapper
 require './app/entities'
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite::memory:')
+DataMapper.setup(:default, "sqlite3://#{File.dirname(__FILE__)}/../data.db")
 DataMapper.finalize
-DataMapper.auto_migrate!
+begin
+  Target.first 
+rescue
+  DataMapper.auto_migrate!   # this will migrate schema and erase everything
+end
 
 # monitor
 require './app/monitor'
