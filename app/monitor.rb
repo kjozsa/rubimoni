@@ -1,11 +1,14 @@
 class Monitor
   # load monitor config, create targets
   def initialize
+    now = DateTime.now
+
     File.readlines('monitor.conf').each do |line|
       next if line.match /^\s*$/
       elems = line.split
 
-      Target.create(:method => elems.shift, :name => elems.shift, :data => elems.join(' '))
+      target = Target.create(:method => elems.shift, :name => elems.shift, :data => elems.join(' '))
+      Log.create(:target => target, :measured_from => now)
     end
     monitor
   end
@@ -15,7 +18,15 @@ class Monitor
     now = DateTime.now
 
     Target.all.each do |target|
-      Log.create(:target => target, :measured_at => now, :up => http200(target.data))
+      up = http200(target.data)
+      log = Log.last(:target => target)
+      
+      if log[:up] == up 
+        log.update(:measured_at => now, :up => up)
+      else 
+        log.update(:measured_at => now)
+        Log.create(:target => target, :measured_from => now, :up => up)
+      end
     end
   end
 

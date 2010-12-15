@@ -14,6 +14,7 @@ class Log   # a log entry
   property :id, Serial
   belongs_to :target
   
+  property :measured_from, DateTime
   property :measured_at, DateTime
   property :up, Boolean
 end
