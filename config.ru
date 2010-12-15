@@ -1,4 +1,4 @@
-require './initialize'
+require './app/initialize'
 
 run Sinatra::Application
 

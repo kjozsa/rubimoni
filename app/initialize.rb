@@ -4,14 +4,14 @@ require 'logger'
 Bundler.require
 
 # O/R mapper
-require './entities'
+require './app/entities'
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite::memory:')
 DataMapper.finalize
 DataMapper.auto_migrate!
 
 # monitor
-require './monitor'
+require './app/monitor'
 $monitor = Monitor.new
 
 # scheduler
@@ -22,7 +22,7 @@ $scheduler.every '30s' do
 end
 
 # web ui
-require './webui'
-set :public, File.dirname(__FILE__) + '/static'
-set :views, File.dirname(__FILE__) + '/views'
+require './app/webui'
+set :public, File.dirname(__FILE__) + '/../static'
+set :views, File.dirname(__FILE__) + '/../views'
 
