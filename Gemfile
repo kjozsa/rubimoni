@@ -7,3 +7,5 @@ gem 'dm-core'
 gem 'dm-migrations'
 gem 'dm-sqlite-adapter'
 
+gem 'rufus-scheduler'
+
