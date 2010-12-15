@@ -8,8 +8,8 @@ get '/' do
     log[:up] ? @up += 1 : @down += 1
   end
   
-  ag = Log.aggregate(:measured_at, :id.count, :up => true, :limit => 10, :order => :measured_at.desc).map{|x| x[1]}
-  @upgraph_data = ([].fill(0, 0, 10-ag.size) + ag).join ','
+  ag = Log.aggregate(:measured_at, :id.count, :up => true, :limit => $watch_mins, :order => :measured_at.desc).map{|x| x[1]}
+  @upgraph_data = ([].fill(0, 0, $watch_mins - ag.size) + ag).join ','   # fill up with 0
   puts @upgraph_data
 
   haml :index

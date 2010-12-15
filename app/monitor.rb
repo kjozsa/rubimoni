@@ -21,7 +21,6 @@ class Monitor
 
   # monitor http, check for response code 200
   def http200(url)
-    puts "monitoring #{url}"
     begin
       Net::HTTP.get_response(URI.parse(url)).code == '200'
     rescue Exception

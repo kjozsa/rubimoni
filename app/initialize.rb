@@ -3,6 +3,10 @@ require 'bundler'
 require 'logger'
 Bundler.require
 
+# config
+$refresh = 60
+$watch_mins = 120
+
 # O/R mapper
 require './app/entities'
 DataMapper::Logger.new($stdout, :debug)
@@ -17,7 +21,7 @@ $monitor = Monitor.new
 # scheduler
 require 'rufus/scheduler'
 $scheduler ||= Rufus::Scheduler.start_new
-$scheduler.every '30s' do 
+$scheduler.every "#{$refresh}s" do 
   $monitor.monitor
 end
 
