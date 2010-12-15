@@ -1,7 +1,6 @@
 get '/' do
-  p Log.class
   @last_refresh = Log.max[:measured_at]
-  @targets = {}  # url, is_up?
+  @targets = {}  # target, lastlog
   @up, @down = 0, 0
   
   Target.all.each do |target|
