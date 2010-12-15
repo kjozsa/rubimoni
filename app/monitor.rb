@@ -1,7 +1,7 @@
 class Monitor
   # load monitor config, create targets
   def initialize
-    now = DateTime.now
+    now = DateTime.now - 0.00001
 
     File.readlines('monitor.conf').each do |line|
       next if line.match /^\s*$/
@@ -10,7 +10,7 @@ class Monitor
 
       target = Target.first(:name => name) || Target.create(:name => name)
       target.update(:method => method, :data => data)
-      Log.create(:target => target, :measured_from => now)
+      Log.create(:target => target, :measured_from => now, :up => false)
     end
     monitor
   end
@@ -26,8 +26,8 @@ class Monitor
       if log[:up] == up 
         log.update(:measured_at => now, :up => up)
       else 
-        log.update(:measured_at => now)
-        Log.create(:target => target, :measured_from => now, :up => up)
+        log.update(:measured_at => now - 0.00001)   # minus 1s
+        Log.create(:target => target, :measured_from => now, :measured_at => now, :up => up)
       end
     end
   end
