@@ -24,7 +24,7 @@ class Monitor
     begin
       Net::HTTP.get_response(URI.parse(url)).code == '200'
     rescue Exception
-      nil
+      false
     end
   end
 end

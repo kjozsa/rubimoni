@@ -3,15 +3,23 @@
 %div
   %img{ :src => "http://chart.apis.google.com/chart?chs=250x100&chd=t:#{@up},#{@down}&cht=p3&chl=Up|Down" }
 
+%br
+%br
+
 - @targets.keys.each do |target|
   %div
-    - if @targets[target][:up]
+    - if @targets[target][:log][:up]
       %img{ :src => 'green.png' }
     - else 
       %img{ :src => 'red.png' }
     = "#{target.name} (#{target.data})"
+    %br
+      %small
+        last seen down at: 
+        = @targets[target][:last_down]
 
 %br  
+%br
 
 %div 
   %img{ :src => "http://chart.apis.google.com/chart?chxr=0,-#{$watch_mins},0|1,0,#{@targets.size}&chxt=x,y&chs=300x225&cht=lc&chco=3D7930&chds=0,#{@targets.size}&chd=t:#{@upgraph_data}&chg=15,-1,0,1&chls=2,4,0&chma=5&chm=B,C5D4B5BB,0,0,0,-1&chtt=services+uptime+in+last+#{$watch_mins}+mins" }
