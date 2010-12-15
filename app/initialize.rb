@@ -10,7 +10,7 @@ $watch_mins = 120
 # O/R mapper
 require './app/entities'
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, "sqlite3://#{File.dirname(__FILE__)}/../data.db")
+DataMapper.setup(:default, "sqlite3:data.db")
 DataMapper.finalize
 begin
   Target.first 
