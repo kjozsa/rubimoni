@@ -1,5 +1,5 @@
 get '/' do
-  @last_refresh = Log.max[:measured_at]
+  @last_refresh = Log.max(:measured_at)
   @targets = {}  # target, lastlog
   @up, @down = 0, 0
   
@@ -8,7 +8,7 @@ get '/' do
     log[:up] ? @up += 1 : @down += 1
   end
 
-  @upgraph_data = nil  
+  @upgraph_data = Log.aggregate(:measured_at, :id.count, :up => true).map{|x| x[1]}.join(',')
 
   haml :index
 end
