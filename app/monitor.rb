@@ -10,7 +10,7 @@ class Monitor
 
       target = Target.first(:name => name) || Target.create(:name => name)
       target.update(:method => method, :data => data)
-      Log.create(:target => target, :measured_from => now, :up => false)
+      Log.create(:target => target, :measured_from => now)
     end
     monitor
   end
@@ -24,9 +24,8 @@ class Monitor
       log = Log.last(:target => target)
       
       if log[:up] == up 
-        log.update(:measured_at => now, :up => up)
+        log.update(:measured_at => now)
       else 
-        log.update(:measured_at => now - 0.00001)   # minus 1s
         Log.create(:target => target, :measured_from => now, :measured_at => now, :up => up)
       end
     end
