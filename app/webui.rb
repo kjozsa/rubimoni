@@ -7,8 +7,10 @@ get '/' do
     @targets[target] = log = Log.first(:target => target, :measured_at => @last_refresh)
     log[:up] ? @up += 1 : @down += 1
   end
-
-  @upgraph_data = Log.aggregate(:measured_at, :id.count, :up => true).map{|x| x[1]}.join(',')
+  
+  ag = Log.aggregate(:measured_at, :id.count, :up => true, :limit => 10, :order => :measured_at.desc).map{|x| x[1]}
+  @upgraph_data = ([].fill(0, 0, 10-ag.size) + ag).join ','
+  puts @upgraph_data
 
   haml :index
 end
