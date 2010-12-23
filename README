@@ -1,2 +1,4 @@
-quick hack for monitoring http urls
+a simple approach for monitoring http urls with ruby, sinatra, datamapper and google chart
+
+git clone, bundle, rackup, http://localhost:9292
 
